@@ -18,8 +18,8 @@ logger.addHandler(handler)
 class WordDictionary:
 
     dict_file = 'WordData_1227.txt'
-    phonetic_table = 'phonetic_compare.txt'
-    tone_table = 'tone_compare.txt'
+    phonetic_table = 'data/phonetic_compare.txt'
+    tone_table = 'data/tone_compare.txt'
 
     @classmethod
     def search_sentence(cls, sentence):
