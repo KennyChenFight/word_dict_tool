@@ -35,8 +35,8 @@ class WordDictionary:
                 else:
                     sentence_pron_dict[text] = line[1:]
 
-        sentence_list = cls.find_all_contain_sentence(sentence, sentence_pron_dict)
-        return sentence_list
+        sentence_pron_dict = cls.find_all_contain_sentence(sentence, sentence_pron_dict)
+        return sentence_pron_dict
 
     @classmethod
     def find_all_contain_sentence(cls, sentence, sentence_pron_dict):
@@ -47,7 +47,10 @@ class WordDictionary:
             sentence = sentence_list.pop(-1)
             sentence_list.insert(0, sentence)
 
-        result = cls.sort_by_words_position(sentence_list, sentence)
+        result = {}
+        sentences = cls.sort_by_words_position(sentence_list, sentence)
+        for sentence in sentences:
+            result[sentence] = sentence_pron_dict[sentence]
         return result
 
     @classmethod
@@ -175,7 +178,7 @@ class WordDictionary:
                         cls.add_new_line_content(new_line_count, sentence, pron_list)
                     else:
                         less_than_len_words_line_count = [line_count for line_count, word in fit_first_word_dict.items() if len(word) < len(sentence)]
-                        new_line_count = less_than_len_words_line_count[0] - 1
+                        new_line_count = less_than_len_words_line_count[0]
                         cls.add_new_line_content(new_line_count, sentence, pron_list)
                 info += '新增成功' + '\n'
 
