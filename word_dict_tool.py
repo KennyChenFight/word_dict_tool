@@ -16,15 +16,23 @@ class AppWindow(QMainWindow):
 
     def search_sentence_click(self):
         sentence = self.ui.le_search_sentence.text()
-        sentence_list = WordDictionary.search_sentence(sentence)
+        sentence_pron_dict = WordDictionary.search_sentence(sentence)
         self.ui.tb_sentence_list.setText('')
 
-        if sentence_list:
-            for temp_sentence in sentence_list:
-                color_sentence = temp_sentence.replace(sentence, '<span style=\" color: #ff0000;\">%s</span>' % str(sentence))
-                self.ui.tb_sentence_list.append(color_sentence)
+        if sentence_pron_dict:
+            for word, pron in sentence_pron_dict.items():
+                word_index = word.find(sentence)
+                color_sentence = word.replace(sentence, '<span style=\" color: #ff0000;\">%s</span>' % str(sentence))
+
+                for i in range(word_index, word_index + len(sentence)):
+                    pron[i] = '<span style=\" color: #ff0000;\">%s</span>' % str(pron[word_index])
+                color_pron = ','.join(pron)
+
+                all = color_sentence + ',' + color_pron
+                self.ui.tb_sentence_list.append(all)
         else:
             self.ui.tb_sentence_list.append('找不到該字詞!')
+        print(sentence_pron_dict)
 
     def mark_phonetic_click(self):
         prons = self.ui.te_mark_list.toPlainText()
