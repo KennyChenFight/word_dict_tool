@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         self.pb_search_sentence.setFont(font)
         self.pb_search_sentence.setObjectName("pb_search_sentence")
         self.tb_sentence_list = QtWidgets.QTextBrowser(self.centralwidget)
-        self.tb_sentence_list.setGeometry(QtCore.QRect(80, 170, 331, 141))
+        self.tb_sentence_list.setGeometry(QtCore.QRect(80, 170, 451, 141))
         font = QtGui.QFont()
         font.setFamily("微軟正黑體")
         font.setPointSize(12)

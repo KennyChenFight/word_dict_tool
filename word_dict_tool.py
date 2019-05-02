@@ -1,6 +1,7 @@
 from dictionary import WordDictionary
 import sys
 from word_dict_tool_ui import Ui_MainWindow
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QFileDialog, QMessageBox, QPushButton, QMainWindow
 
 
@@ -32,6 +33,8 @@ class AppWindow(QMainWindow):
                 self.ui.tb_sentence_list.append(all)
         else:
             self.ui.tb_sentence_list.append('找不到該字詞!')
+        self.ui.tb_sentence_list.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
+        self.ui.tb_sentence_list.horizontalScrollBar().setValue(0)
         print(sentence_pron_dict)
 
     def mark_phonetic_click(self):
