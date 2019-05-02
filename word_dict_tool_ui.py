@@ -253,7 +253,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "字典檔工具"))
         self.label.setText(_translate("MainWindow", "字典檔字詞查詢/新增/修改 (Note:輸入拼音時，皆一列一個拼音單元)"))
         self.label_2.setText(_translate("MainWindow", "1.查詢字詞"))
         self.pb_search_sentence.setText(_translate("MainWindow", "查詢"))
