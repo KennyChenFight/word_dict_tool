@@ -74,6 +74,18 @@ class WordDictionary:
         return result
 
     @classmethod
+    def sort_by_words_position2(cls, sentence_list, sentence):
+        sentence_len = len(sentence)
+
+        correct_sentence_list = []
+        max_sentence_len = len(max(sentence_list, key=len))
+        print(max_sentence_len)
+        while True:
+            for i in range(0, max_sentence_len, sentence_len):
+                print(i)
+
+
+    @classmethod
     def mark_phonetic(cls, pron_sentence_list):
         phonetic_table, tone_table = cls.read_phonetic_tone_table()
         print(phonetic_table)

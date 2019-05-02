@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1034</width>
-    <height>656</height>
+    <width>1353</width>
+    <height>775</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>360</x>
       <y>10</y>
       <width>651</width>
       <height>41</height>
@@ -100,8 +100,8 @@
      <rect>
       <x>80</x>
       <y>170</y>
-      <width>451</width>
-      <height>141</height>
+      <width>501</width>
+      <height>501</height>
      </rect>
     </property>
     <property name="font">
@@ -116,8 +116,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>310</y>
+      <x>580</x>
+      <y>50</y>
       <width>291</width>
       <height>41</height>
      </rect>
@@ -137,8 +137,8 @@
    <widget class="QPushButton" name="pb_mark_phonetic">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>420</y>
+      <x>810</x>
+      <y>130</y>
       <width>51</width>
       <height>141</height>
      </rect>
@@ -159,7 +159,7 @@
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>50</y>
+      <y>290</y>
       <width>121</width>
       <height>41</height>
      </rect>
@@ -179,8 +179,8 @@
    <widget class="QLineEdit" name="le_add_sentence">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>100</y>
+      <x>670</x>
+      <y>330</y>
       <width>161</width>
       <height>31</height>
      </rect>
@@ -197,8 +197,8 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>90</y>
+      <x>610</x>
+      <y>320</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -218,8 +218,8 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>130</y>
+      <x>610</x>
+      <y>360</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -239,8 +239,8 @@
    <widget class="QPushButton" name="pb_add_sentence">
     <property name="geometry">
      <rect>
-      <x>840</x>
-      <y>100</y>
+      <x>850</x>
+      <y>330</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -260,8 +260,8 @@
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>310</y>
+      <x>1000</x>
+      <y>50</y>
       <width>121</width>
       <height>41</height>
      </rect>
@@ -281,8 +281,8 @@
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>340</y>
+      <x>1020</x>
+      <y>90</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -302,8 +302,8 @@
    <widget class="QLineEdit" name="le_alter_sentence">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>350</y>
+      <x>1080</x>
+      <y>100</y>
       <width>161</width>
       <height>31</height>
      </rect>
@@ -320,8 +320,8 @@
    <widget class="QPushButton" name="pb_alter_sentence_and_pron">
     <property name="geometry">
      <rect>
-      <x>840</x>
-      <y>350</y>
+      <x>1250</x>
+      <y>100</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -341,10 +341,10 @@
    <widget class="QTextEdit" name="te_mark_list">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>390</y>
+      <x>630</x>
+      <y>120</y>
       <width>151</width>
-      <height>201</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="font">
@@ -359,8 +359,8 @@
    <widget class="QTextEdit" name="te_add_sentence_pron_list">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>140</y>
+      <x>670</x>
+      <y>370</y>
       <width>161</width>
       <height>171</height>
      </rect>
@@ -377,8 +377,8 @@
    <widget class="QTextEdit" name="te_alter_sentence_pron_list">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>390</y>
+      <x>1080</x>
+      <y>150</y>
       <width>161</width>
       <height>201</height>
      </rect>
@@ -395,10 +395,10 @@
    <widget class="QTextBrowser" name="tb_mark_list">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>390</y>
-      <width>151</width>
-      <height>201</height>
+      <x>880</x>
+      <y>120</y>
+      <width>111</width>
+      <height>151</height>
      </rect>
     </property>
     <property name="font">
@@ -455,8 +455,8 @@
    <widget class="QLabel" name="label_11">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>380</y>
+      <x>1020</x>
+      <y>130</y>
       <width>51</width>
       <height>41</height>
      </rect>
@@ -476,8 +476,8 @@
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>340</y>
+      <x>630</x>
+      <y>70</y>
       <width>51</width>
       <height>61</height>
      </rect>
@@ -497,8 +497,8 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>340</y>
+      <x>880</x>
+      <y>70</y>
       <width>51</width>
       <height>61</height>
      </rect>
@@ -521,7 +521,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1034</width>
+     <width>1353</width>
      <height>22</height>
     </rect>
    </property>
