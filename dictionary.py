@@ -5,6 +5,7 @@ from itertools import groupby
 from itertools import permutations
 import re
 import operator
+import traceback
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -76,14 +77,15 @@ class WordDictionary:
 
     @classmethod
     def sort_by_words_position2(cls, sentence_list, sentence):
-        max_length = len(max(sentence_list, key=len))
         result = []
-        for i in range(max_length):
-            for s in sentence_list:
-                find_index = s.find(sentence)
-                if find_index != -1 and find_index == i:
-                    if s not in result:
-                        result.append(s)
+        if sentence_list:
+            max_length = len(max(sentence_list, key=len))
+            for i in range(max_length):
+                for s in sentence_list:
+                    find_index = s.find(sentence)
+                    if find_index != -1 and find_index == i:
+                        if s not in result:
+                            result.append(s)
         return result
 
     @classmethod
