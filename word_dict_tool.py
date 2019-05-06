@@ -80,11 +80,17 @@ class AppWindow(QMainWindow):
                                 QMessageBox.Yes)
         else:
             pron_list = prons.split('\n')
-            info = WordDictionary.add_sentence_to_word_dict(sentence, pron_list)
+            if len(pron_list) == len(sentence):
+                info = WordDictionary.add_sentence_to_word_dict(sentence, pron_list)
 
-            QMessageBox.information(self,
+                QMessageBox.information(self,
+                                        '>_<',
+                                        info,
+                                        QMessageBox.Yes)
+            else:
+                QMessageBox.warning(self,
                                     '>_<',
-                                    info,
+                                    '字詞跟拼音數量不一致喔',
                                     QMessageBox.Yes)
 
     def alter_sentence_and_pron_click(self):
@@ -97,32 +103,38 @@ class AppWindow(QMainWindow):
                                 QMessageBox.Yes)
         else:
             new_pron_list = prons.split('\n')
-            odd_pron_list = WordDictionary.find_sentence_pron(sentence)
+            if len(new_pron_list) == len(sentence):
+                odd_pron_list = WordDictionary.find_sentence_pron(sentence)
 
-            if not odd_pron_list:
+                if not odd_pron_list:
+                    QMessageBox.warning(self,
+                                        '>_<',
+                                        '找不到該字詞，無法修改!',
+                                        QMessageBox.Yes)
+                else:
+                    new_prons = '\n'.join(new_pron_list)
+                    odd_prons = '\n'.join(odd_pron_list)
+
+                    msgBox = QMessageBox()
+                    msgBox.setText('舊的拼音如下:' + '\n' +
+                                   odd_prons + '\n' +
+                                   '新的拼音如下:' + '\n' +
+                                   new_prons + '\n')
+                    msgBox.addButton(QPushButton('修改'), QMessageBox.YesRole)
+                    msgBox.addButton(QPushButton('不修改'), QMessageBox.NoRole)
+                    ret = msgBox.exec()
+
+                    if ret == 0:
+                        WordDictionary.alter_sentence_and_pron(sentence, new_pron_list)
+                        QMessageBox.information(self,
+                                                '>_<',
+                                                '修改成功!',
+                                                QMessageBox.Yes)
+            else:
                 QMessageBox.warning(self,
                                     '>_<',
-                                    '找不到該字詞，無法修改!',
+                                    '字詞跟拼音數量不一致喔',
                                     QMessageBox.Yes)
-            else:
-                new_prons = '\n'.join(new_pron_list)
-                odd_prons = '\n'.join(odd_pron_list)
-
-                msgBox = QMessageBox()
-                msgBox.setText('舊的拼音如下:' + '\n' +
-                               odd_prons + '\n' +
-                               '新的拼音如下:' + '\n' +
-                               new_prons + '\n')
-                msgBox.addButton(QPushButton('修改'), QMessageBox.YesRole)
-                msgBox.addButton(QPushButton('不修改'), QMessageBox.NoRole)
-                ret = msgBox.exec()
-
-                if ret == 0:
-                    WordDictionary.alter_sentence_and_pron(sentence, new_pron_list)
-                    QMessageBox.information(self,
-                                            '>_<',
-                                            '修改成功!',
-                                            QMessageBox.Yes)
 
 app = QApplication(sys.argv)
 w = AppWindow()
