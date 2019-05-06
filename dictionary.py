@@ -48,7 +48,8 @@ class WordDictionary:
             sentence_list.insert(0, sentence)
 
         result = {}
-        sentences = cls.sort_by_words_position(sentence_list, sentence)
+        #sentences = cls.sort_by_words_position(sentence_list, sentence)
+        sentences = cls.sort_by_words_position2(sentence_list, sentence)
         for sentence in sentences:
             result[sentence] = sentence_pron_dict[sentence]
         return result
@@ -75,15 +76,15 @@ class WordDictionary:
 
     @classmethod
     def sort_by_words_position2(cls, sentence_list, sentence):
-        sentence_len = len(sentence)
-
-        correct_sentence_list = []
-        max_sentence_len = len(max(sentence_list, key=len))
-        print(max_sentence_len)
-        while True:
-            for i in range(0, max_sentence_len, sentence_len):
-                print(i)
-
+        max_length = len(max(sentence_list, key=len))
+        result = []
+        for i in range(max_length):
+            for s in sentence_list:
+                find_index = s.find(sentence)
+                if find_index != -1 and find_index == i:
+                    if s not in result:
+                        result.append(s)
+        return result
 
     @classmethod
     def mark_phonetic(cls, pron_sentence_list):
