@@ -9,7 +9,7 @@ import traceback
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-log_file_name = 'log/' + 'info' + '.log'
+log_file_name = 'log/' + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '.log'
 handler = logging.FileHandler(log_file_name, 'w+', 'utf-8')
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 handler.setFormatter(formatter)
