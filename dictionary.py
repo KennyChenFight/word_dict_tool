@@ -181,7 +181,7 @@ class WordDictionary:
 
             if already_exists_sentence:
                 info += '已存在這個字詞' + '\n'
-            elif len(sentence) > 1:
+            else:
                 if fit_length_word_dict:
                     line_count, word = fit_length_word_dict.popitem()
                     new_line_count = line_count + 1
@@ -197,11 +197,12 @@ class WordDictionary:
                         cls.add_new_line_content(new_line_count, sentence, pron_list)
                 info += '新增成功' + '\n'
 
-            if not exists_single_word:
+            if not exists_single_word and len(sentence) > 1:
                 info += '無' + '"' + sentence[0] + '"' + '單字詞' + '\n'
                 info += '提醒:可加' + '"' + sentence[0] + '"' + '\n'
 
         return info
+
     @classmethod
     def add_new_line_content(cls, new_line_count, sentence, pron_list):
         with open(cls.dict_file, encoding='utf-8') as i, open('test.txt', 'w', encoding='utf-8') as o:
