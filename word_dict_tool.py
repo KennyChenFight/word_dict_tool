@@ -27,26 +27,9 @@ class AppWindow(QMainWindow):
                                 '你沒有輸入字詞喔~',
                                 QMessageBox.Yes)
         else:
-            sentence_pron_dict = WordDictionary.search_sentence(sentence)
+            message = WordDictionary.search_sentence(sentence)
             self.ui.tb_sentence_list.setText('')
-
-            all = ''
-            if sentence_pron_dict:
-                sentence_all = ''
-                for word, pron in sentence_pron_dict.items():
-                    word_index = word.find(sentence)
-                    color_sentence = word.replace(sentence,
-                                                  '<span style=\" color: #ff0000;\">%s</span>' % str(sentence), 1)
-
-                    for i in range(word_index, word_index + len(sentence)):
-                        pron[i] = '<span style=\" color: #ff0000;\">%s</span>' % str(pron[i])
-                    color_pron = ','.join(pron)
-
-                    sentence_all += color_sentence + ',' + color_pron + '<br>'
-                all += sentence_all
-            else:
-                all += '找不到該字詞!'
-            self.ui.tb_sentence_list.setText(all)
+            self.ui.tb_sentence_list.setText(message)
             self.ui.tb_sentence_list.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
             self.ui.tb_sentence_list.horizontalScrollBar().setValue(0)
 
@@ -59,15 +42,7 @@ class AppWindow(QMainWindow):
                                 QMessageBox.Yes)
         else:
             pron_list = prons.split('\n')
-            phonetic_collection = WordDictionary.mark_phonetic(pron_list)
-
-            message = ''
-
-            for phonetic_list in phonetic_collection:
-                if phonetic_list:
-                    message += ''.join(phonetic_list) + '\n'
-                else:
-                    message += '找不到拼音' + '\n'
+            message = WordDictionary.mark_phonetic(pron_list)
             self.ui.tb_mark_list.setText(message)
 
     def add_sentence_to_dict_click(self):
@@ -125,10 +100,10 @@ class AppWindow(QMainWindow):
                     ret = msgBox.exec()
 
                     if ret == 0:
-                        WordDictionary.alter_sentence_and_pron(sentence, new_pron_list)
+                        message = WordDictionary.alter_sentence_and_pron(sentence, new_pron_list)
                         QMessageBox.information(self,
                                                 '>_<',
-                                                '修改成功!',
+                                                message,
                                                 QMessageBox.Yes)
             else:
                 QMessageBox.warning(self,
