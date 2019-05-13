@@ -6,6 +6,7 @@ from itertools import permutations
 import re
 import operator
 import traceback
+from filelock import FileLock
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -18,6 +19,7 @@ logger.addHandler(handler)
 
 class WordDictionary:
 
+    lock_dict_file = 'WordData_1227.txt.lock'
     dict_file = 'WordData_1227.txt'
     phonetic_table = 'data/phonetic_compare.txt'
     tone_table = 'data/tone_compare.txt'
@@ -32,12 +34,29 @@ class WordDictionary:
 
                 text = line[0]
                 if text in sentence_pron_dict:
-                    print('Oops! repeated text:', text)
+                    logger.debug('Oops! repeated text:', text)
                 else:
                     sentence_pron_dict[text] = line[1:]
 
         sentence_pron_dict = cls.find_all_contain_sentence(sentence, sentence_pron_dict)
-        return sentence_pron_dict
+
+        message = ''
+        if sentence_pron_dict:
+            sentence_all = ''
+            for word, pron in sentence_pron_dict.items():
+                word_index = word.find(sentence)
+                color_sentence = word.replace(sentence,
+                                              '<span style=\" color: #ff0000;\">%s</span>' % str(sentence), 1)
+
+                for i in range(word_index, word_index + len(sentence)):
+                    pron[i] = '<span style=\" color: #ff0000;\">%s</span>' % str(pron[i])
+                color_pron = ','.join(pron)
+
+                sentence_all += color_sentence + ',' + color_pron + '<br>'
+            message += sentence_all
+        else:
+            message += '找不到該字詞!'
+        return message
 
     @classmethod
     def find_all_contain_sentence(cls, sentence, sentence_pron_dict):
@@ -91,8 +110,8 @@ class WordDictionary:
     @classmethod
     def mark_phonetic(cls, pron_sentence_list):
         phonetic_table, tone_table = cls.read_phonetic_tone_table()
-        print(phonetic_table)
-        print(tone_table)
+        logger.debug(phonetic_table)
+        logger.debug(tone_table)
 
         phonetic_sentence_list = []
         for pron_sentence in pron_sentence_list:
@@ -106,13 +125,13 @@ class WordDictionary:
                         not_exist_pron = False
                         phonetic_sentence.append(phonetic)
                         phonetic_sentence.append(compare_pron[-1])
-                print(not_exist_pron)
+                logger.debug(not_exist_pron)
                 if not_exist_pron:
                     phonetic_sentence = []
                     phonetic_sentence_list.append([])
                     break
 
-            print(phonetic_sentence)
+            logger.debug(phonetic_sentence)
             collection = []
             if phonetic_sentence and phonetic_sentence[0] == 3:
                 collection.append(phonetic_sentence[1])
@@ -131,7 +150,15 @@ class WordDictionary:
                         collection.append(tone)
                 phonetic_sentence_list.append(collection)
 
-        return phonetic_sentence_list
+        message = ''
+
+        for phonetic_list in phonetic_sentence_list:
+            if phonetic_list:
+                message += ''.join(phonetic_list) + '\n'
+            else:
+                message += '找不到拼音' + '\n'
+
+        return message
 
     @classmethod
     def read_phonetic_tone_table(cls):
@@ -150,6 +177,7 @@ class WordDictionary:
 
     @classmethod
     def add_sentence_to_word_dict(cls, sentence, pron_list):
+
         word_dict = {}
         info = ''
         with open(cls.dict_file, 'r', encoding='utf-8') as f:
@@ -205,23 +233,27 @@ class WordDictionary:
 
     @classmethod
     def add_new_line_content(cls, new_line_count, sentence, pron_list):
-        with open(cls.dict_file, encoding='utf-8') as i, open('test.txt', 'w', encoding='utf-8') as o:
-            line_count = 1
-            for line in i:
-                if line_count == new_line_count:
-                    o.write(sentence)
-                    o.write(',')
-                    o.write(','.join(pron_list))
-                    for index in range(0, 10 - len(sentence)):
-                        o.write(',')
-                    o.write('\n')
-                    o.write(line)
-                else:
-                    o.write(line)
-                line_count += 1
-        os.remove(cls.dict_file)
-        os.rename('test.txt', cls.dict_file)
-        logger.info('在第' + str(new_line_count) + '行' + '添加:' + sentence)
+        lock = FileLock(cls.lock_dict_file, timeout=2)
+        with lock:
+            collect = []
+            with open(cls.dict_file, encoding='utf-8') as i:
+                line_count = 1
+                for line in i:
+                    if line_count == new_line_count:
+                        collect.append(sentence)
+                        collect.append(',')
+                        collect.append(','.join(pron_list))
+                        for index in range(0, 10 - len(sentence)):
+                            collect.append(',')
+                        collect.append('\n')
+                        collect.append(line)
+                    else:
+                        collect.append(line)
+                    line_count += 1
+            message = ''.join(collect)
+            with open(cls.dict_file, 'w', encoding='utf-8') as o:
+                o.write(message)
+            logger.info('在第' + str(new_line_count) + '行' + '添加:' + sentence)
 
     @classmethod
     def find_sentence_pron(cls, sentence):
@@ -236,22 +268,26 @@ class WordDictionary:
 
     @classmethod
     def alter_sentence_and_pron(cls, sentence, pron_list):
-        with open(cls.dict_file, encoding='utf-8') as i, open('test.txt', 'w', encoding='utf-8') as o:
-            line_count = 1
-            for line in i:
-                word = line.split(',')[0]
-                if word == sentence:
-                    specific_line_count = line_count
-                    o.write(sentence)
-                    o.write(',')
-                    o.write(','.join(pron_list))
-                    for index in range(0, 10 - len(sentence)):
-                        o.write(',')
-                    o.write('\n')
-                else:
-                    o.write(line)
-                line_count += 1
-
-        os.remove(cls.dict_file)
-        os.rename('test.txt', cls.dict_file)
-        logger.info('在第' + str(specific_line_count) + '行' + '修改' + '"' + sentence + '"' + '的拼音')
+        lock = FileLock(cls.lock_dict_file, timeout=2)
+        with lock:
+            collect = []
+            with open(cls.dict_file, encoding='utf-8') as i:
+                line_count = 1
+                for line in i:
+                    word = line.split(',')[0]
+                    if word == sentence:
+                        specific_line_count = line_count
+                        collect.append(sentence)
+                        collect.append(',')
+                        collect.append(','.join(pron_list))
+                        for index in range(0, 10 - len(sentence)):
+                            collect.append(',')
+                        collect.append('\n')
+                    else:
+                        collect.append(line)
+                    line_count += 1
+            message = ''.join(collect)
+            with open(cls.dict_file, 'w', encoding='utf-8') as o:
+                o.write(message)
+            logger.info('在第' + str(specific_line_count) + '行' + '修改' + '"' + sentence + '"' + '的拼音')
+        return '修改成功!'
