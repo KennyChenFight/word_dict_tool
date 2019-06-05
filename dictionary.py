@@ -232,6 +232,35 @@ class WordDictionary:
         return info
 
     @classmethod
+    def add_multiple_sentence(cls, filepath):
+        sentence_pron_dict = {}
+        with open(filepath, encoding='utf-8') as f:
+            sentence = ''
+            pron_list = []
+            for line in f:
+                line = line.strip()
+                test_line = line.replace(' ', '')
+                if len(test_line) != 0 and not test_line.encode().isalpha():
+                    sentence = line
+                if test_line.encode().isalpha():
+                    pron_list.append(line)
+                if len(test_line) == 0:
+                    sentence_pron_dict[sentence] = pron_list
+                    pron_list.clear()
+            sentence_pron_dict[sentence] = pron_list
+
+        message = []
+        for sentence, pron_list in sentence_pron_dict.items():
+            info = cls.add_sentence_to_word_dict(sentence, pron_list)
+            if '已存在這個字詞' in info:
+                message.append(sentence + ':已存在這個字詞')
+            elif '新增成功' in info:
+                message.append(sentence + ':新增成功')
+            else:
+                message.append(info)
+        return message
+
+    @classmethod
     def add_new_line_content(cls, new_line_count, sentence, pron_list):
         lock = FileLock(cls.lock_dict_file, timeout=2)
         with lock:

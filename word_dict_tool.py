@@ -15,6 +15,7 @@ class AppWindow(QMainWindow):
         self.ui.le_search_sentence.returnPressed.connect(self.search_sentence_click)
         self.ui.pb_mark_phonetic.clicked.connect(self.mark_phonetic_click)
         self.ui.pb_add_sentence.clicked.connect(self.add_sentence_to_dict_click)
+        self.ui.pb_add_mutiple_sentence.clicked.connect(self.add_multiple_sentence_to_dict_click)
         self.ui.le_add_sentence.returnPressed.connect(self.add_sentence_to_dict_click)
         self.ui.pb_alter_sentence_and_pron.clicked.connect(self.alter_sentence_and_pron_click)
         self.ui.le_alter_sentence.returnPressed.connect(self.alter_sentence_and_pron_click)
@@ -67,6 +68,20 @@ class AppWindow(QMainWindow):
                                     '>_<',
                                     '字詞跟拼音數量不一致喔',
                                     QMessageBox.Yes)
+
+    def add_multiple_sentence_to_dict_click(self):
+        filepath, filetype = QFileDialog. \
+            getOpenFileName(self,
+                            "選取文件",
+                            "./",
+                            "Text Files (*.txt)")
+        messages = WordDictionary.add_multiple_sentence(filepath)
+
+        QMessageBox.information(self,
+                                '>_<',
+                                '\n'.join(messages),
+                                QMessageBox.Yes)
+
 
     def alter_sentence_and_pron_click(self):
         sentence = self.ui.le_alter_sentence.text()
@@ -137,3 +152,5 @@ sys.exit(app.exec_())
 # WordDictionary.alter_sentence_and_pron(sentence, new_pron_list)
 
 # WordDictionary.sort_by_words_position2('1', '華')
+
+# WordDictionary.add_multiple_sentence('test.txt')
