@@ -26,36 +26,39 @@ class WordDictionary:
 
     @classmethod
     def search_sentence(cls, sentence):
-        sentence_pron_dict = {}
-        with open(cls.dict_file, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip().split(',')
-                line = [item for item in line if item != '']
+        try:
+            sentence_pron_dict = {}
+            with open(cls.dict_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip().split(',')
+                    line = [item for item in line if item != '']
 
-                text = line[0]
-                if text in sentence_pron_dict:
-                    logger.debug('Oops! repeated text:', text)
-                else:
-                    sentence_pron_dict[text] = line[1:]
+                    text = line[0]
+                    if text in sentence_pron_dict:
+                        logger.debug('Oops! repeated text:', text)
+                    else:
+                        sentence_pron_dict[text] = line[1:]
 
-        sentence_pron_dict = cls.find_all_contain_sentence(sentence, sentence_pron_dict)
+            sentence_pron_dict = cls.find_all_contain_sentence(sentence, sentence_pron_dict)
 
-        message = ''
-        if sentence_pron_dict:
-            sentence_all = ''
-            for word, pron in sentence_pron_dict.items():
-                word_index = word.find(sentence)
-                color_sentence = word.replace(sentence,
-                                              '<span style=\" color: #ff0000;\">%s</span>' % str(sentence), 1)
+            message = ''
+            if sentence_pron_dict:
+                sentence_all = ''
+                for word, pron in sentence_pron_dict.items():
+                    word_index = word.find(sentence)
+                    color_sentence = word.replace(sentence,
+                                                  '<span style=\" color: #ff0000;\">%s</span>' % str(sentence), 1)
 
-                for i in range(word_index, word_index + len(sentence)):
-                    pron[i] = '<span style=\" color: #ff0000;\">%s</span>' % str(pron[i])
-                color_pron = ','.join(pron)
+                    for i in range(word_index, word_index + len(sentence)):
+                        pron[i] = '<span style=\" color: #ff0000;\">%s</span>' % str(pron[i])
+                    color_pron = ','.join(pron)
 
-                sentence_all += color_sentence + ',' + color_pron + '<br>'
-            message += sentence_all
-        else:
-            message += '找不到該字詞!'
+                    sentence_all += color_sentence + ',' + color_pron + '<br>'
+                message += sentence_all
+            else:
+                message += '找不到該字詞!'
+        except:
+            traceback.print_exc()
         return message
 
     @classmethod
@@ -246,8 +249,9 @@ class WordDictionary:
                     pron_list.append(line)
                 if len(test_line) == 0:
                     sentence_pron_dict[sentence] = pron_list
-                    pron_list.clear()
+                    pron_list = []
             sentence_pron_dict[sentence] = pron_list
+        print(sentence_pron_dict)
 
         message = []
         for sentence, pron_list in sentence_pron_dict.items():
