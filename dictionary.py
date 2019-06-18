@@ -21,6 +21,7 @@ class WordDictionary:
     phonetic_table = 'data/phonetic_compare.txt'
     tone_table = 'data/tone_compare.txt'
 
+    # 在字典檔裡尋找符合的字詞
     @classmethod
     def search_sentence(cls, sentence):
         sentence_pron_dict = {}
@@ -55,6 +56,7 @@ class WordDictionary:
             message += '找不到該字詞!'
         return message
 
+    # 找到所有句子裡包含特定的詞語
     @classmethod
     def find_all_contain_sentence(cls, sentence, sentence_pron_dict):
         sentence_pron_dict = {text: pron for text, pron in sentence_pron_dict.items() if sentence in text}
@@ -71,6 +73,7 @@ class WordDictionary:
             result[sentence] = sentence_pron_dict[sentence]
         return result
 
+    # 將字進行排序，根據句子的長度
     @classmethod
     def sort_by_words_position(cls, sentence_list, sentence):
         group_by_len = [list(g) for k, g in groupby(sentence_list, key=len)]
@@ -91,6 +94,7 @@ class WordDictionary:
 
         return result
 
+    # 將字進行排序，根據特定字出現在句子裡面的順序
     @classmethod
     def sort_by_words_position2(cls, sentence_list, sentence):
         result = []
@@ -104,6 +108,7 @@ class WordDictionary:
                             result.append(s)
         return result
 
+    # 標註注音
     @classmethod
     def mark_phonetic(cls, pron_sentence_list):
         phonetic_table, tone_table = cls.read_phonetic_tone_table()
@@ -157,6 +162,7 @@ class WordDictionary:
 
         return message
 
+    # 讀取注音音調表
     @classmethod
     def read_phonetic_tone_table(cls):
         phonetic_table = {}
@@ -172,6 +178,7 @@ class WordDictionary:
                 tone_table[line[0] + line[1]] = line[2]
         return phonetic_table, tone_table
 
+    # 新增字詞到字典檔
     @classmethod
     def add_sentence_to_word_dict(cls, sentence, pron_list):
 
@@ -228,6 +235,7 @@ class WordDictionary:
 
         return info
 
+    # 用檔案方式新增多個字詞到字典檔
     @classmethod
     def add_multiple_sentence(cls, filepath):
         sentence_pron_dict = {}
@@ -258,6 +266,7 @@ class WordDictionary:
                 message.append(info)
         return message
 
+    # 新增句子
     @classmethod
     def add_new_line_content(cls, new_line_count, sentence, pron_list):
         lock = FileLock(cls.lock_dict_file, timeout=2)
@@ -282,6 +291,7 @@ class WordDictionary:
                 o.write(message)
             logger.info('在第' + str(new_line_count) + '行' + '添加:' + sentence)
 
+    # 找到該句子的拼音
     @classmethod
     def find_sentence_pron(cls, sentence):
         with open(cls.dict_file, encoding='utf-8') as f:
@@ -293,6 +303,7 @@ class WordDictionary:
                 if word == sentence:
                     return pron_list
 
+    # 修改該句子的拼音
     @classmethod
     def alter_sentence_and_pron(cls, sentence, pron_list):
         lock = FileLock(cls.lock_dict_file, timeout=2)
